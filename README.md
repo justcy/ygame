@@ -1,8 +1,7 @@
-# php
-php-alpine 镜像
+# 棋牌游戏框架	
 
-# Run a single PHP script 
-
+基于golang的棋牌游戏框架
+# 使用
 ```
-$ docker run -it --rm --name my-running-script -v "$PWD":/usr/src/myapp -w /usr/src/myapp php:7.2-cli php your-script.php
+todo
 ```
