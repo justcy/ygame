@@ -2,7 +2,95 @@ package base
 
 import "math/rand"
 
-func ShuffleSliceCard(seed int64,src []Card) []Card {
+//CountCard  统计相同牌有多少张
+func CountCard(hand CardVec) map[int]CardVec {
+	r := map[int]CardVec{}
+	temp := UniqueCards(hand)
+	for _, v := range temp {
+		x := CountInSlice(v, hand)
+		r[int(x)] = append(r[int(x)], v)
+	}
+	return r
+}
+func countCardByType(hand CardVec, groupType int8) map[int]CardVec {
+	r := map[int]CardVec{}
+	temp := UniqueCardsByType(hand, groupType)
+	for _, v := range temp {
+		finder := v.Number
+		if groupType == CardEumColor {
+			finder = v.Color
+		}
+		x := CountInSliceByType(finder, groupType, hand)
+		r[int(x)] = append(r[int(x)], v)
+	}
+	return r
+}
+func CountCardByNumber(hand CardVec) map[int]CardVec {
+	return countCardByType(hand, CardEumNumber)
+}
+
+//CountCardByColor  统计相同颜色牌有多少张
+func CountCardByColor(hand CardVec) map[int]CardVec {
+	return countCardByType(hand, CardEumColor)
+}
+
+//查找相同的牌
+func CountInSlice(finder Card, slice []Card) int32 {
+	exists := int32(0)
+	for _, v := range slice {
+		if v == finder {
+			exists++
+		}
+	}
+	return exists
+}
+
+//CountInSliceByType 根据条件查找相同牌
+func CountInSliceByType(finder, groupType int8, slice CardVec) int32 {
+	exists := int32(0)
+	for _, v := range slice {
+		if (groupType == CardEumNumber && v.Number == finder) || (groupType == CardEumColor && v.Color == finder) {
+			exists++
+		}
+	}
+	return exists
+}
+
+//UniqueCards  剔除重复的牌
+func UniqueCards(s []Card) []Card {
+	result := make([]Card, 0, len(s))
+	m := make(map[Card]bool)
+	for _, v := range s {
+		if _, exists := m[v]; !exists {
+			m[v] = true
+			result = append(result, v)
+		}
+	}
+	return result
+}
+
+//UniqueCardsByType 根据点数剔除重复的牌
+func UniqueCardsByType(s []Card, t int8) []Card {
+	result := make([]Card, 0, len(s))
+	m := make(map[int8]bool)
+	for _, v := range s {
+		if t == CardEumNumber {
+			if _, exists := m[v.Number]; !exists {
+				m[v.Number] = true
+				result = append(result, v)
+			}
+		} else if t == CardEumColor {
+			if _, exists := m[v.Color]; !exists {
+				m[v.Color] = true
+				result = append(result, v)
+			}
+		}
+	}
+	return result
+}
+
+//ShuffleSliceCard 根据随机数种子打乱牌
+func ShuffleSliceCard(seed int64, src []Card) []Card {
 	dest := make([]Card, len(src))
 
 	rand.Seed(seed)
