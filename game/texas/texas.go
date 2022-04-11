@@ -78,13 +78,15 @@ func (t *texas) combineCards(cards base.Cards, num int) []base.Cards {
 	}
 	for index, card := range cards {
 		if num == 1 {
-			temp := base.Cards{}
-			r = append(r, append(temp, card))
+			temp := base.Cards{card}
+			r = append(r, temp)
 		} else {
 			slice := cards[index:]
 			c := t.combineCards(slice, num-1)
 			for _, val := range c {
-				r = append(r, val)
+				temp := base.Cards{card}
+				temp = append(temp,val...)
+				r = append(r, temp)
 			}
 		}
 	}
