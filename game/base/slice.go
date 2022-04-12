@@ -2,9 +2,16 @@ package base
 
 import "math/rand"
 
+func GetCardsColorsAndNumbers(hand []Card) (color,number []int8)  {
+	for _, card := range hand {
+		color = append(color, card.Color)
+		number = append(number, card.Number)
+	}
+	return color,number
+}
 //CountCard  统计相同牌有多少张
-func CountCard(hand CardVec) map[int]CardVec {
-	r := map[int]CardVec{}
+func CountCard(hand []Card) map[int][]Card {
+	r := map[int][]Card{}
 	temp := UniqueCards(hand)
 	for _, v := range temp {
 		x := CountInSlice(v, hand)
@@ -12,8 +19,8 @@ func CountCard(hand CardVec) map[int]CardVec {
 	}
 	return r
 }
-func countCardByType(hand CardVec, groupType int8) map[int]CardVec {
-	r := map[int]CardVec{}
+func countCardByType(hand []Card, groupType int8) map[int][]Card {
+	r := map[int][]Card{}
 	temp := UniqueCardsByType(hand, groupType)
 	for _, v := range temp {
 		finder := v.Number
@@ -25,12 +32,12 @@ func countCardByType(hand CardVec, groupType int8) map[int]CardVec {
 	}
 	return r
 }
-func CountCardByNumber(hand CardVec) map[int]CardVec {
+func CountCardByNumber(hand []Card) map[int][]Card {
 	return countCardByType(hand, CardEumNumber)
 }
 
 //CountCardByColor  统计相同颜色牌有多少张
-func CountCardByColor(hand CardVec) map[int]CardVec {
+func CountCardByColor(hand []Card) map[int][]Card {
 	return countCardByType(hand, CardEumColor)
 }
 

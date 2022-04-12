@@ -1,6 +1,7 @@
 package texas
 
 import (
+	"fmt"
 	"github.com/justcy/ygame/game/base"
 	"github.com/justcy/ygame/game/base/poker"
 	"reflect"
@@ -38,10 +39,15 @@ func (t *texas) sortCards(cards base.Cards) []base.Cards {
 		return append(r, cards)
 	}
 	tempCards := t.combineCards(cards, 5)
+	fmt.Println(tempCards)
 	sort.Slice(tempCards, func(i, j int) bool {
 		result, _ := t.CompareCards(tempCards[i], tempCards[j])
-		return result == 1
+		fmt.Println(tempCards[i])
+		fmt.Println(tempCards[j])
+		fmt.Printf("result:%d \n",result)
+		return result == -1
 	})
+	fmt.Println(tempCards)
 	return tempCards
 }
 
@@ -63,6 +69,7 @@ func (t *texas) CompareCards(cardsA, cardsB []base.Card) (int, base.Cards) {
 	} else if cardTypeB < cardTypeA {
 		return -1, cardsA
 	}
+	fmt.Printf("相同牌型比较 %d\n",cardTypeA)
 	return t.equalCardTypeCompare(cardTypeA, cardsA, cardsB)
 }
 
@@ -100,10 +107,10 @@ func (t *texas) getCardType(b []base.Card) int8 {
 		}
 		return TypeHighCard
 	}
-	isStraight := t.isStraight(countByNumber)
+	isStraight := t.isStraight(countByNumber[1])
 	isFlush := len(countByColor[1]) == len(b)
 	if isStraight {
-		isRoyalFlush := t.isRoyalFlush(countByNumber)
+		isRoyalFlush := t.isRoyalFlush(countByNumber[1])
 		if isRoyalFlush {
 			return TypeRoyalFlush
 		} else if isFlush {
@@ -132,20 +139,25 @@ func (t *texas) getCardType(b []base.Card) int8 {
 	return TypeHighCard
 }
 
-func (t *texas) isRoyalFlush(number map[int]base.CardVec) bool {
-	keys := base.GetMapKeys(number)
-	sort.Ints(keys)
-	return reflect.DeepEqual(maxStraight, keys)
+func (t *texas) isRoyalFlush(number []base.Card) bool {
+	//keys := base.GetMapKeys(number)
+	//sort.Ints(keys)
+	//return reflect.DeepEqual(maxStraight, keys)
+	return  true
 }
-func (t *texas) isStraight(number map[int]base.CardVec) bool {
-	keys := base.GetMapKeys(number)
-	sort.Ints(keys)
-	if reflect.DeepEqual(minStraight, keys) {
+func (t *texas) isStraight(number []base.Card) bool {
+	fmt.Println("参数")
+	fmt.Println(number)
+	fmt.Println("排序")
+	_,temp := base.GetCardsColorsAndNumbers(base.SortCards(number))
+	fmt.Println(temp)
+	if reflect.DeepEqual(minStraight, temp) {
+		fmt.Println("最小顺子")
 		return true
 	}
-	for i, key := range keys {
+	for i, key := range temp {
 		next := i + 1
-		if keys[next] != 0 && keys[next]-key != 1 {
+		if next < len(temp) && temp[next] != 0 && temp[next]-key != 1 {
 			return false
 		}
 	}
@@ -155,15 +167,14 @@ func (t *texas) isStraight(number map[int]base.CardVec) bool {
 func (t *texas) equalCardTypeCompare(cardType int8, a []base.Card, b []base.Card) (int, base.Cards) {
 	countByNumberA := base.CountCardByNumber(a)
 	countByNumberB := base.CountCardByNumber(b)
-	numA := base.GetMapKeys(countByNumberA)
-	numB := base.GetMapKeys(countByNumberB)
-	sort.Ints(numA)
-	sort.Ints(numB)
 	switch cardType {
 	case TypeRoyalFlush:
 		return 0, a
 	case TypeStraightFlush:
 	case TypeStraight:
+		_,numA := base.GetCardsColorsAndNumbers(base.SortCards(countByNumberA[1]))
+		_,numB := base.GetCardsColorsAndNumbers(base.SortCards(countByNumberB[1]))
+
 		if numA[0] == numB[0] {
 			return 0, a
 		} else {
@@ -257,24 +268,38 @@ func (t *texas) equalCardTypeCompare(cardType int8, a []base.Card, b []base.Card
 }
 
 func (t *texas) compareOneCards(a base.CardVec, b base.CardVec) int {
+	fmt.Println("参数A")
+	fmt.Println(a)
+	fmt.Println("参数B")
+	fmt.Println(b)
 	if len(a) == 0 && len(b) == 0 {
 		return 0
 	}
-	var numA, numB []int
-	for _, cardA := range a {
-		numA = append(numA, int(cardA.Number))
-	}
-	for _, cardB := range b {
-		numB = append(numB, int(cardB.Number))
-	}
-	sort.Sort(sort.Reverse(sort.IntSlice(numA)))
-	sort.Sort(sort.Reverse(sort.IntSlice(numB)))
-	for i, v := range numB {
-		if v > numA[i] {
+
+	_,numA := base.GetCardsColorsAndNumbers(base.SortCards(a))
+	_,numB := base.GetCardsColorsAndNumbers(base.SortCards(b))
+	for i := len(numB)-1; i >0 ; i-- {
+		if numB[i] > numA[i] {
 			return 1
-		} else if v < numA[i] {
+		} else if numB[i] < numA[i] {
 			return -1
 		}
 	}
+	//var numA, numB []int
+	//for _, cardA := range a {
+	//	numA = append(numA, int(cardA.Number))
+	//}
+	//for _, cardB := range b {
+	//	numB = append(numB, int(cardB.Number))
+	//}
+	//sort.Sort(sort.Reverse(sort.IntSlice(numA)))
+	//sort.Sort(sort.Reverse(sort.IntSlice(numB)))
+	//for i, v := range numB {
+	//	if v > numA[i] {
+	//		return 1
+	//	} else if v < numA[i] {
+	//		return -1
+	//	}
+	//}
 	return 0
 }

@@ -1,9 +1,8 @@
 package base
 
-func GetMapKeys(m interface{}) []int {
-	temp := m.(map[int]interface{})
-	keys := make([]int, len(temp))
-	for k := range temp {
+func GetMapKeys(m map[int]CardVec) []int {
+	keys := make([]int, len(m))
+	for k := range m {
 		keys = append(keys, k)
 	}
 	return keys

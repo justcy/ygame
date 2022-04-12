@@ -34,3 +34,10 @@ func (ms CardVec) Less(i, j int) bool {
 func (ms CardVec) Sort() {
 	sort.Sort(ms)
 }
+
+func SortCards(c []Card) []Card {
+	sort.Slice(c, func(i, j int) bool {
+		return c[i].Number < c[j].Number
+	})
+	return c
+}
