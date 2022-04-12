@@ -69,9 +69,9 @@ func (t *texas) CompareCards(cardsA, cardsB []base.Card) (int, base.Cards) {
 //combineCards 组合所有牌型
 func (t *texas) combineCards(cards base.Cards, num int) []base.Cards {
 	var r []base.Cards
-	if len(cards) <= 5 {
-		return append(r, cards)
-	}
+	//if len(cards) <= 5 {
+	//	return append(r, cards)
+	//}
 	n := len(cards)
 	if n < num || num <= 0 {
 		return r
@@ -81,12 +81,10 @@ func (t *texas) combineCards(cards base.Cards, num int) []base.Cards {
 			temp := base.Cards{card}
 			r = append(r, temp)
 		} else {
-			slice := cards[index:]
-			c := t.combineCards(slice, num-1)
+			c := t.combineCards(cards[index+1:], num-1)
 			for _, val := range c {
 				temp := base.Cards{card}
-				temp = append(temp,val...)
-				r = append(r, temp)
+				r = append(r, append(temp,val...))
 			}
 		}
 	}
