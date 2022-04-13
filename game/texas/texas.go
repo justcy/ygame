@@ -107,10 +107,11 @@ func (t *texas) getCardType(b []base.Card) int8 {
 		}
 		return TypeHighCard
 	}
-	isStraight := t.isStraight(countByNumber[1])
-	isFlush := t.isFlush(countByNumber[1])
+	color, number := base.GetCardsColorsAndNumbers(base.SortCards(countByNumber[1]))
+	isStraight := t.isStraight(number)
+	isFlush := t.isFlush(color)
 	if isStraight {
-		isRoyalFlush := t.isRoyalFlush(countByNumber[1])
+		isRoyalFlush := t.isRoyalFlush(number)
 		if isRoyalFlush {
 			return TypeRoyalFlush
 		} else if isFlush {
@@ -139,35 +140,31 @@ func (t *texas) getCardType(b []base.Card) int8 {
 	return TypeHighCard
 }
 
-func (t *texas) isRoyalFlush(number []base.Card) bool {
+func (t *texas) isRoyalFlush(number []int8) bool {
 	if len(number) < 5 {
 		return false
 	}
-	_, temp := base.GetCardsColorsAndNumbers(base.SortCards(number))
-	if reflect.DeepEqual(maxStraight, temp) {
+	if reflect.DeepEqual(maxStraight, number) {
 		return true
 	}
 	return false
 }
-func (t *texas) isFlush(number []base.Card) bool {
-	if len(number) < 5 {
+func (t *texas) isFlush(color []int8) bool {
+	if len(color) < 5 {
 		return false
 	}
-	color, _ := base.GetCardsColorsAndNumbers(number)
 	return len(base.Unique(color)) == 1
 }
-func (t *texas) isStraight(number []base.Card) bool {
+func (t *texas) isStraight(number []int8) bool {
 	if len(number) < 5 {
 		return false
 	}
-	_, temp := base.GetCardsColorsAndNumbers(base.SortCards(number))
-	if reflect.DeepEqual(minStraight, temp) {
-		fmt.Println("最小顺子")
+	if reflect.DeepEqual(minStraight, number) {
 		return true
 	}
-	for i, key := range temp {
+	for i, key := range number {
 		next := i + 1
-		if next < len(temp) && temp[next] != 0 && temp[next]-key != 1 {
+		if next < len(number) && number[next] != 0 && number[next]-key != 1 {
 			return false
 		}
 	}

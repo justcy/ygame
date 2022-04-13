@@ -256,6 +256,14 @@ func Test_texas_getCardType(t1 *testing.T) {
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint5},
 				{Color: poker.PokerColorSpade, Number: poker.PokerPoint6},
 			}},want: TypeStraight},
+		{name: "最小顺子", args: args{
+			b: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint3},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint5},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPointA},
+			}},want: TypeStraight},
 		{name: "葫芦", args: args{
 			b: []base.Card{
 				{Color: poker.PokerColorClub, Number: poker.PokerPoint9},
@@ -298,49 +306,6 @@ func Test_texas_getCardType(t1 *testing.T) {
 		})
 	}
 }
-
-func Test_texas_isRoyalFlush(t1 *testing.T) {
-	type args struct {
-		number map[int]base.CardVec
-	}
-	tests := []struct {
-		name string
-		args args
-		want bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t1.Run(tt.name, func(t1 *testing.T) {
-			t := &texas{}
-			if got := t.isRoyalFlush(tt.args.number[1]); got != tt.want {
-				t1.Errorf("isRoyalFlush() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_texas_isStraight(t1 *testing.T) {
-	type args struct {
-		number map[int]base.CardVec
-	}
-	tests := []struct {
-		name string
-		args args
-		want bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t1.Run(tt.name, func(t1 *testing.T) {
-			t := &texas{}
-			if got := t.isStraight(tt.args.number[1]); got != tt.want {
-				t1.Errorf("isStraight() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func Test_texas_sortCards(t1 *testing.T) {
 	type args struct {
 		cards base.Cards
