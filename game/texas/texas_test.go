@@ -52,13 +52,65 @@ func Test_texas_MaxCards(t1 *testing.T) {
 				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
 				base.Card{Color: poker.PokerColorSpade, Number: poker.PokerPoint7},
 				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
-				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
+				base.Card{Color: poker.PokerColorSpade, Number: poker.PokerPointK},
+			}},
+			want: []base.Card{
+				//{Color: poker.PokerColorClub, Number: poker.PokerPoint3},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPoint7},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPointK},
+			}},
+		{name: "一对", args: args{
+			cards: base.Cards{
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
+				base.Card{Color: poker.PokerColorClub, Number: poker.PokerPoint3},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				base.Card{Color: poker.PokerColorClub, Number: poker.PokerPoint7},
+				base.Card{Color: poker.PokerColorSpade, Number: poker.PokerPoint9},
+				base.Card{Color: poker.PokerColorSpade, Number: poker.PokerPointA},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
 			}},
 			want: []base.Card{
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
-				{Color: poker.PokerColorSpade, Number: poker.PokerPoint7},
-				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
-				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint7},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPointA},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+			}},
+		{name: "2对", args: args{
+			cards: base.Cards{
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
+				base.Card{Color: poker.PokerColorClub, Number: poker.PokerPoint3},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				base.Card{Color: poker.PokerColorClub, Number: poker.PokerPoint6},
+				base.Card{Color: poker.PokerColorSpade, Number: poker.PokerPoint6},
+				base.Card{Color: poker.PokerColorSpade, Number: poker.PokerPointA},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+			}},
+			want: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint6},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPoint6},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPointA},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+			}},
+		{name: "三条", args: args{
+			cards: base.Cards{
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
+				base.Card{Color: poker.PokerColorClub, Number: poker.PokerPoint3},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				base.Card{Color: poker.PokerColorClub, Number: poker.PokerPoint7},
+				base.Card{Color: poker.PokerColorClub, Number: poker.PokerPointA},
+				base.Card{Color: poker.PokerColorSpade, Number: poker.PokerPointA},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+			}},
+			want: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint7},
+				{Color: poker.PokerColorClub, Number: poker.PokerPointA},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPointA},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
 			}},
 		{name: "顺子", args: args{
@@ -66,17 +118,102 @@ func Test_texas_MaxCards(t1 *testing.T) {
 				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
 				base.Card{Color: poker.PokerColorClub, Number: poker.PokerPoint3},
 				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
-				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint5},
-				base.Card{Color: poker.PokerColorSpade, Number: poker.PokerPoint7},
-				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint6},
-				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
+				base.Card{Color: poker.PokerColorClub, Number: poker.PokerPoint5},
+				base.Card{Color: poker.PokerColorSpade, Number: poker.PokerPoint9},
+				base.Card{Color: poker.PokerColorSpade, Number: poker.PokerPoint6},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
 			}},
 			want: []base.Card{
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
 				{Color: poker.PokerColorClub, Number: poker.PokerPoint3},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint5},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPoint6},
+			}},
+		{name: "同花", args: args{
+			cards: base.Cards{
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint3},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint8},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				base.Card{Color: poker.PokerColorSpade, Number: poker.PokerPoint6},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+			}},
+			want: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint3},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint8},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+			}},
+		{name: "葫芦", args: args{
+			cards: base.Cards{
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				base.Card{Color: poker.PokerColorSpade, Number: poker.PokerPoint9},
+				base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint5},
+				base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint5},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint6},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+			}},
+			want: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint5},
+				{Color: poker.PokerColorHeart, Number: poker.PokerPoint5},
+			}},
+		{name: "四条", args: args{
+			cards: base.Cards{
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				base.Card{Color: poker.PokerColorSpade, Number: poker.PokerPoint9},
+				base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
+				base.Card{Color: poker.PokerColorClub, Number: poker.PokerPoint9},
+				base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint5},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint6},
+				base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPointA},
+			}},
+			want: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorHeart, Number: poker.PokerPointA},
+			}},
+		{name: "同花顺", args: args{
+			cards: base.Cards{
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint3},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint5},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint6},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+			}},
+			want: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint3},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint5},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint6},
+			}},
+			{name: "皇家同花顺", args: args{
+			cards: base.Cards{
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointT},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPoint8},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointJ},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointQ},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
+				base.Card{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+			}},
+			want: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointT},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointJ},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointQ},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
 			}},
 	}
 	for _, tt := range tests {
@@ -157,7 +294,46 @@ func Test_texas_compareOneCards(t1 *testing.T) {
 		args args
 		want int
 	}{
-		// TODO: Add test cases.
+		{name: "比较牌型，len(a) != len(b)", args: args{a: base.CardVec{}, b: base.CardVec{
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint2},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint2},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint2},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint2},
+		}}, want: 0},
+		{name: "比较牌型，两个都为空", args: args{a: base.CardVec{}, b: base.CardVec{}}, want: 0},
+		{name: "比较牌型，A>B", args: args{a: base.CardVec{
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint2},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPointJ},
+		}, b: base.CardVec{
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint2},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint8},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPointT},
+		}},
+			want: -1,
+		},
+		{name: "比较牌型，A<B", args: args{a: base.CardVec{
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint2},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPointJ},
+		}, b: base.CardVec{
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint2},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint8},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPointQ},
+		}},
+			want: 1,
+		},
+		{name: "比较牌型，A=B", args: args{a: base.CardVec{
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint2},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPointJ},
+		}, b: base.CardVec{
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint2},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
+			base.Card{Color: poker.PokerColorHeart, Number: poker.PokerPointJ},
+		}},
+			want: 0,
+		},
 	}
 	for _, tt := range tests {
 		t1.Run(tt.name, func(t1 *testing.T) {
@@ -210,7 +386,7 @@ func Test_texas_getCardType(t1 *testing.T) {
 			b: []base.Card{
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
 				{Color: poker.PokerColorClub, Number: poker.PokerPoint3},
-			}},want: TypeHighCard},
+			}}, want: TypeHighCard},
 		{name: "高牌", args: args{
 			b: []base.Card{
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
@@ -218,12 +394,12 @@ func Test_texas_getCardType(t1 *testing.T) {
 				{Color: poker.PokerColorSpade, Number: poker.PokerPoint7},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
-			}},want: TypeHighCard},
+			}}, want: TypeHighCard},
 		{name: "一对-2张", args: args{
 			b: []base.Card{
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
 				{Color: poker.PokerColorClub, Number: poker.PokerPoint2},
-			}},want: TypeOnePair},
+			}}, want: TypeOnePair},
 		{name: "一对", args: args{
 			b: []base.Card{
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
@@ -231,7 +407,7 @@ func Test_texas_getCardType(t1 *testing.T) {
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
-			}},want: TypeOnePair},
+			}}, want: TypeOnePair},
 		{name: "两对", args: args{
 			b: []base.Card{
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint3},
@@ -239,7 +415,7 @@ func Test_texas_getCardType(t1 *testing.T) {
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
 				{Color: poker.PokerColorSpade, Number: poker.PokerPoint4},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
-			}},want: TypeTwoPair},
+			}}, want: TypeTwoPair},
 		{name: "三条", args: args{
 			b: []base.Card{
 				{Color: poker.PokerColorClub, Number: poker.PokerPoint9},
@@ -247,7 +423,7 @@ func Test_texas_getCardType(t1 *testing.T) {
 				{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
 				{Color: poker.PokerColorSpade, Number: poker.PokerPoint7},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
-			}},want: TypeThree},
+			}}, want: TypeThree},
 		{name: "顺子", args: args{
 			b: []base.Card{
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
@@ -255,7 +431,7 @@ func Test_texas_getCardType(t1 *testing.T) {
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint5},
 				{Color: poker.PokerColorSpade, Number: poker.PokerPoint6},
-			}},want: TypeStraight},
+			}}, want: TypeStraight},
 		{name: "最小顺子", args: args{
 			b: []base.Card{
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
@@ -263,7 +439,7 @@ func Test_texas_getCardType(t1 *testing.T) {
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint5},
 				{Color: poker.PokerColorSpade, Number: poker.PokerPointA},
-			}},want: TypeStraight},
+			}}, want: TypeStraight},
 		{name: "葫芦", args: args{
 			b: []base.Card{
 				{Color: poker.PokerColorClub, Number: poker.PokerPoint9},
@@ -271,7 +447,7 @@ func Test_texas_getCardType(t1 *testing.T) {
 				{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
 				{Color: poker.PokerColorSpade, Number: poker.PokerPointK},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
-			}},want: TypeFullHouse},
+			}}, want: TypeFullHouse},
 		{name: "四条", args: args{
 			b: []base.Card{
 				{Color: poker.PokerColorClub, Number: poker.PokerPoint9},
@@ -279,7 +455,7 @@ func Test_texas_getCardType(t1 *testing.T) {
 				{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
 				{Color: poker.PokerColorSpade, Number: poker.PokerPoint9},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
-			}},want: TypeFour},
+			}}, want: TypeFour},
 		{name: "同花顺", args: args{
 			b: []base.Card{
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
@@ -287,7 +463,7 @@ func Test_texas_getCardType(t1 *testing.T) {
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint5},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint6},
-			}},want: TypeStraightFlush},
+			}}, want: TypeStraightFlush},
 		{name: "皇家同花顺", args: args{
 			b: []base.Card{
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPointT},
@@ -295,7 +471,7 @@ func Test_texas_getCardType(t1 *testing.T) {
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPointQ},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
 				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
-			}},want: TypeRoyalFlush},
+			}}, want: TypeRoyalFlush},
 	}
 	for _, tt := range tests {
 		t1.Run(tt.name, func(t1 *testing.T) {

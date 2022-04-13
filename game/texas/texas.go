@@ -1,7 +1,6 @@
 package texas
 
 import (
-	"fmt"
 	"github.com/justcy/ygame/game/base"
 	"github.com/justcy/ygame/game/base/poker"
 	"reflect"
@@ -39,15 +38,14 @@ func (t *texas) sortCards(cards base.Cards) []base.Cards {
 		return append(r, cards)
 	}
 	tempCards := t.combineCards(cards, 5)
-	fmt.Println(tempCards)
 	sort.Slice(tempCards, func(i, j int) bool {
 		result, _ := t.CompareCards(tempCards[i], tempCards[j])
-		fmt.Println(tempCards[i])
-		fmt.Println(tempCards[j])
-		fmt.Printf("result:%d \n", result)
+		//fmt.Println(tempCards[i])
+		//fmt.Println(tempCards[j])
+		//fmt.Printf("result:%d \n", result)
 		return result == -1
 	})
-	fmt.Println(tempCards)
+	//fmt.Println(tempCards)
 	return tempCards
 }
 
@@ -69,7 +67,7 @@ func (t *texas) CompareCards(cardsA, cardsB []base.Card) (int, base.Cards) {
 	} else if cardTypeB < cardTypeA {
 		return -1, cardsA
 	}
-	fmt.Printf("相同牌型比较 %d\n", cardTypeA)
+	//fmt.Printf("相同牌型比较 %d\n", cardTypeA)
 	return t.equalCardTypeCompare(cardTypeA, cardsA, cardsB)
 }
 
@@ -100,7 +98,6 @@ func (t *texas) combineCards(cards base.Cards, num int) []base.Cards {
 
 func (t *texas) getCardType(b []base.Card) int8 {
 	countByNumber := base.CountCardByNumber(b)
-	fmt.Println(countByNumber)
 	if len(b) <= 2 {
 		if len(countByNumber[2]) == 1 {
 			return TypeOnePair
@@ -176,8 +173,7 @@ func (t *texas) equalCardTypeCompare(cardType int8, a []base.Card, b []base.Card
 	switch cardType {
 	case TypeRoyalFlush:
 		return 0, a
-	case TypeStraightFlush:
-	case TypeStraight:
+	case TypeStraightFlush,TypeStraight:
 		_, numA := base.GetCardsColorsAndNumbers(base.SortCards(countByNumberA[1]))
 		_, numB := base.GetCardsColorsAndNumbers(base.SortCards(countByNumberB[1]))
 
@@ -231,8 +227,7 @@ func (t *texas) equalCardTypeCompare(cardType int8, a []base.Card, b []base.Card
 			return 1, b
 		}
 		return -1, a
-	case TypeFlush:
-	case TypeHighCard:
+	case TypeFlush,TypeHighCard:
 		oneCompare := t.compareOneCards(countByNumberA[1], countByNumberB[1])
 		if -1 == oneCompare {
 			return -1, a
@@ -242,7 +237,7 @@ func (t *texas) equalCardTypeCompare(cardType int8, a []base.Card, b []base.Card
 		return 0, a
 	case TypeTwoPair:
 		twoCompare := t.compareOneCards(countByNumberA[2], countByNumberB[2])
-		if -1 == twoCompare {
+		if 0 == twoCompare {
 			//比较单牌大小
 			oneCompare := t.compareOneCards(countByNumberA[1], countByNumberB[1])
 			if -1 == oneCompare {
@@ -254,7 +249,7 @@ func (t *texas) equalCardTypeCompare(cardType int8, a []base.Card, b []base.Card
 		} else if 1 == twoCompare {
 			return 1, b
 		}
-		return 0, a
+		return -1, a
 	case TypeOnePair:
 		if countByNumberA[2][0].Number == countByNumberB[2][0].Number {
 			//比较单牌大小
@@ -274,38 +269,17 @@ func (t *texas) equalCardTypeCompare(cardType int8, a []base.Card, b []base.Card
 }
 
 func (t *texas) compareOneCards(a base.CardVec, b base.CardVec) int {
-	fmt.Println("参数A")
-	fmt.Println(a)
-	fmt.Println("参数B")
-	fmt.Println(b)
-	if len(a) == 0 && len(b) == 0 {
+	if (len(a) == 0 && len(b) == 0) || len(a) != len(b){
 		return 0
 	}
-
 	_, numA := base.GetCardsColorsAndNumbers(base.SortCards(a))
 	_, numB := base.GetCardsColorsAndNumbers(base.SortCards(b))
-	for i := len(numB) - 1; i > 0; i-- {
+	for i := len(numB) - 1; i >= 0; i-- {
 		if numB[i] > numA[i] {
 			return 1
 		} else if numB[i] < numA[i] {
 			return -1
 		}
 	}
-	//var numA, numB []int
-	//for _, cardA := range a {
-	//	numA = append(numA, int(cardA.Number))
-	//}
-	//for _, cardB := range b {
-	//	numB = append(numB, int(cardB.Number))
-	//}
-	//sort.Sort(sort.Reverse(sort.IntSlice(numA)))
-	//sort.Sort(sort.Reverse(sort.IntSlice(numB)))
-	//for i, v := range numB {
-	//	if v > numA[i] {
-	//		return 1
-	//	} else if v < numA[i] {
-	//		return -1
-	//	}
-	//}
 	return 0
 }
