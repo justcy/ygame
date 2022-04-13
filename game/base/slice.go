@@ -2,16 +2,16 @@ package base
 
 import "math/rand"
 
-func GetCardsColorsAndNumbers(hand []Card) (color,number []int8)  {
+func GetCardsColorsAndNumbers(hand []Card) (color, number []int8) {
 	for _, card := range hand {
 		color = append(color, card.Color)
 		number = append(number, card.Number)
 	}
-	return color,number
+	return color, number
 }
 
 //Unique int8 数组去重
-func Unique(i []int8) []int8{
+func Unique(i []int8) []int8 {
 	result := make([]int8, 0, len(i))
 	m := make(map[int8]bool)
 	for _, v := range i {
@@ -22,6 +22,7 @@ func Unique(i []int8) []int8{
 	}
 	return result
 }
+
 //CountCard  统计相同牌有多少张
 func CountCard(hand []Card) map[int][]Card {
 	r := map[int][]Card{}
@@ -32,26 +33,16 @@ func CountCard(hand []Card) map[int][]Card {
 	}
 	return r
 }
-func countCardByType(hand []Card, groupType int8) map[int][]Card {
+
+func CountCardByNumber(hand []Card) map[int][]Card {
 	r := map[int][]Card{}
-	temp := UniqueCardsByType(hand, groupType)
+	temp := UniqueCardsByType(hand)
 	for _, v := range temp {
 		finder := v.Number
-		if groupType == CardEumColor {
-			finder = v.Color
-		}
-		x := CountInSliceByType(finder, groupType, hand)
+		x := CountInSliceByNumber(finder, hand)
 		r[int(x)] = append(r[int(x)], v)
 	}
 	return r
-}
-func CountCardByNumber(hand []Card) map[int][]Card {
-	return countCardByType(hand, CardEumNumber)
-}
-
-//CountCardByColor  统计相同颜色牌有多少张
-func CountCardByColor(hand []Card) map[int][]Card {
-	return countCardByType(hand, CardEumColor)
 }
 
 //查找相同的牌
@@ -65,11 +56,11 @@ func CountInSlice(finder Card, slice []Card) int32 {
 	return exists
 }
 
-//CountInSliceByType 根据条件查找相同牌
-func CountInSliceByType(finder, groupType int8, slice CardVec) int32 {
+//CountInSliceByNumber 根据条件查找相同牌
+func CountInSliceByNumber(finder int8, slice CardVec) int32 {
 	exists := int32(0)
 	for _, v := range slice {
-		if (groupType == CardEumNumber && v.Number == finder) || (groupType == CardEumColor && v.Color == finder) {
+		if v.Number == finder {
 			exists++
 		}
 	}
@@ -90,20 +81,13 @@ func UniqueCards(s []Card) []Card {
 }
 
 //UniqueCardsByType 根据点数剔除重复的牌
-func UniqueCardsByType(s []Card, t int8) []Card {
+func UniqueCardsByType(s []Card) []Card {
 	result := make([]Card, 0, len(s))
 	m := make(map[int8]bool)
 	for _, v := range s {
-		if t == CardEumNumber {
-			if _, exists := m[v.Number]; !exists {
-				m[v.Number] = true
-				result = append(result, v)
-			}
-		} else if t == CardEumColor {
-			if _, exists := m[v.Color]; !exists {
-				m[v.Color] = true
-				result = append(result, v)
-			}
+		if _, exists := m[v.Number]; !exists {
+			m[v.Number] = true
+			result = append(result, v)
 		}
 	}
 	return result
