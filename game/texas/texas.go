@@ -26,8 +26,8 @@ const (
 	TypeRoyalFlush                // 皇家同花顺 10
 )
 
-var maxStraight = []int{int(poker.PokerPointT), int(poker.PokerPointJ), int(poker.PokerPointQ), int(poker.PokerPointK), int(poker.PokerPointA)}
-var minStraight = []int{int(poker.PokerPoint2), int(poker.PokerPoint3), int(poker.PokerPoint4), int(poker.PokerPoint5), int(poker.PokerPointA)}
+var maxStraight = []int8{poker.PokerPointT, poker.PokerPointJ, poker.PokerPointQ, poker.PokerPointK, poker.PokerPointA}
+var minStraight = []int8{poker.PokerPoint2, poker.PokerPoint3, poker.PokerPoint4, poker.PokerPoint5, poker.PokerPointA}
 
 func (t *texas) MaxCards(cards base.Cards) []base.Card {
 	return t.sortCards(cards)[0]
@@ -44,7 +44,7 @@ func (t *texas) sortCards(cards base.Cards) []base.Cards {
 		result, _ := t.CompareCards(tempCards[i], tempCards[j])
 		fmt.Println(tempCards[i])
 		fmt.Println(tempCards[j])
-		fmt.Printf("result:%d \n",result)
+		fmt.Printf("result:%d \n", result)
 		return result == -1
 	})
 	fmt.Println(tempCards)
@@ -69,7 +69,7 @@ func (t *texas) CompareCards(cardsA, cardsB []base.Card) (int, base.Cards) {
 	} else if cardTypeB < cardTypeA {
 		return -1, cardsA
 	}
-	fmt.Printf("相同牌型比较 %d\n",cardTypeA)
+	fmt.Printf("相同牌型比较 %d\n", cardTypeA)
 	return t.equalCardTypeCompare(cardTypeA, cardsA, cardsB)
 }
 
@@ -91,7 +91,7 @@ func (t *texas) combineCards(cards base.Cards, num int) []base.Cards {
 			c := t.combineCards(cards[index+1:], num-1)
 			for _, val := range c {
 				temp := base.Cards{card}
-				r = append(r, append(temp,val...))
+				r = append(r, append(temp, val...))
 			}
 		}
 	}
@@ -100,7 +100,7 @@ func (t *texas) combineCards(cards base.Cards, num int) []base.Cards {
 
 func (t *texas) getCardType(b []base.Card) int8 {
 	countByNumber := base.CountCardByNumber(b)
-	countByColor := base.CountCardByColor(b)
+	fmt.Println(countByNumber)
 	if len(b) <= 2 {
 		if len(countByNumber[2]) == 1 {
 			return TypeOnePair
@@ -108,7 +108,7 @@ func (t *texas) getCardType(b []base.Card) int8 {
 		return TypeHighCard
 	}
 	isStraight := t.isStraight(countByNumber[1])
-	isFlush := len(countByColor[1]) == len(b)
+	isFlush := t.isFlush(countByNumber[1])
 	if isStraight {
 		isRoyalFlush := t.isRoyalFlush(countByNumber[1])
 		if isRoyalFlush {
@@ -127,7 +127,7 @@ func (t *texas) getCardType(b []base.Card) int8 {
 				return TypeOnePair
 			} else if len(countByNumber[2]) == 2 {
 				return TypeTwoPair
-			} else if len(countByNumber[3]) == 1 {
+			} else if len(countByNumber[3]) == 1 && len(countByNumber[1]) == 2 {
 				return TypeThree
 			} else if len(countByNumber[3]) == 1 && len(countByNumber[2]) == 1 {
 				return TypeFullHouse
@@ -140,17 +140,27 @@ func (t *texas) getCardType(b []base.Card) int8 {
 }
 
 func (t *texas) isRoyalFlush(number []base.Card) bool {
-	//keys := base.GetMapKeys(number)
-	//sort.Ints(keys)
-	//return reflect.DeepEqual(maxStraight, keys)
-	return  true
+	if len(number) < 5 {
+		return false
+	}
+	_, temp := base.GetCardsColorsAndNumbers(base.SortCards(number))
+	if reflect.DeepEqual(maxStraight, temp) {
+		return true
+	}
+	return false
+}
+func (t *texas) isFlush(number []base.Card) bool {
+	if len(number) < 5 {
+		return false
+	}
+	color, _ := base.GetCardsColorsAndNumbers(number)
+	return len(base.Unique(color)) == 1
 }
 func (t *texas) isStraight(number []base.Card) bool {
-	fmt.Println("参数")
-	fmt.Println(number)
-	fmt.Println("排序")
-	_,temp := base.GetCardsColorsAndNumbers(base.SortCards(number))
-	fmt.Println(temp)
+	if len(number) < 5 {
+		return false
+	}
+	_, temp := base.GetCardsColorsAndNumbers(base.SortCards(number))
 	if reflect.DeepEqual(minStraight, temp) {
 		fmt.Println("最小顺子")
 		return true
@@ -163,7 +173,6 @@ func (t *texas) isStraight(number []base.Card) bool {
 	}
 	return true
 }
-
 func (t *texas) equalCardTypeCompare(cardType int8, a []base.Card, b []base.Card) (int, base.Cards) {
 	countByNumberA := base.CountCardByNumber(a)
 	countByNumberB := base.CountCardByNumber(b)
@@ -172,8 +181,8 @@ func (t *texas) equalCardTypeCompare(cardType int8, a []base.Card, b []base.Card
 		return 0, a
 	case TypeStraightFlush:
 	case TypeStraight:
-		_,numA := base.GetCardsColorsAndNumbers(base.SortCards(countByNumberA[1]))
-		_,numB := base.GetCardsColorsAndNumbers(base.SortCards(countByNumberB[1]))
+		_, numA := base.GetCardsColorsAndNumbers(base.SortCards(countByNumberA[1]))
+		_, numB := base.GetCardsColorsAndNumbers(base.SortCards(countByNumberB[1]))
 
 		if numA[0] == numB[0] {
 			return 0, a
@@ -276,9 +285,9 @@ func (t *texas) compareOneCards(a base.CardVec, b base.CardVec) int {
 		return 0
 	}
 
-	_,numA := base.GetCardsColorsAndNumbers(base.SortCards(a))
-	_,numB := base.GetCardsColorsAndNumbers(base.SortCards(b))
-	for i := len(numB)-1; i >0 ; i-- {
+	_, numA := base.GetCardsColorsAndNumbers(base.SortCards(a))
+	_, numB := base.GetCardsColorsAndNumbers(base.SortCards(b))
+	for i := len(numB) - 1; i > 0; i-- {
 		if numB[i] > numA[i] {
 			return 1
 		} else if numB[i] < numA[i] {

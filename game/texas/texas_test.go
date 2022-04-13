@@ -206,7 +206,88 @@ func Test_texas_getCardType(t1 *testing.T) {
 		args args
 		want int8
 	}{
-		// TODO: Add test cases.
+		{name: "高牌-2张", args: args{
+			b: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint3},
+			}},want: TypeHighCard},
+		{name: "高牌", args: args{
+			b: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPoint7},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
+			}},want: TypeHighCard},
+		{name: "一对-2张", args: args{
+			b: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint2},
+			}},want: TypeOnePair},
+		{name: "一对", args: args{
+			b: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint2},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
+			}},want: TypeOnePair},
+		{name: "两对", args: args{
+			b: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint3},
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint3},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPoint4},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+			}},want: TypeTwoPair},
+		{name: "三条", args: args{
+			b: []base.Card{
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPoint7},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
+			}},want: TypeThree},
+		{name: "顺子", args: args{
+			b: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint3},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint5},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPoint6},
+			}},want: TypeStraight},
+		{name: "葫芦", args: args{
+			b: []base.Card{
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPointK},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
+			}},want: TypeFullHouse},
+		{name: "四条", args: args{
+			b: []base.Card{
+				{Color: poker.PokerColorClub, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorHeart, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorSpade, Number: poker.PokerPoint9},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
+			}},want: TypeFour},
+		{name: "同花顺", args: args{
+			b: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint2},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint3},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint4},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint5},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPoint6},
+			}},want: TypeStraightFlush},
+		{name: "皇家同花顺", args: args{
+			b: []base.Card{
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointT},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointJ},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointQ},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointK},
+				{Color: poker.PokerColorDiamond, Number: poker.PokerPointA},
+			}},want: TypeRoyalFlush},
 	}
 	for _, tt := range tests {
 		t1.Run(tt.name, func(t1 *testing.T) {

@@ -9,6 +9,19 @@ func GetCardsColorsAndNumbers(hand []Card) (color,number []int8)  {
 	}
 	return color,number
 }
+
+//Unique int8 数组去重
+func Unique(i []int8) []int8{
+	result := make([]int8, 0, len(i))
+	m := make(map[int8]bool)
+	for _, v := range i {
+		if _, exists := m[v]; !exists {
+			m[v] = true
+			result = append(result, v)
+		}
+	}
+	return result
+}
 //CountCard  统计相同牌有多少张
 func CountCard(hand []Card) map[int][]Card {
 	r := map[int][]Card{}
